@@ -20,6 +20,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'country_id',
+        'state_id',
+        'city_id',
+        'address',
+        'postal_code'
     ];
 
     /**
@@ -43,5 +48,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    //Indicando que el usuario pertenece a un pais
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    //El usuario va a tener multiples calendarios
+    public function calendarios()
+    {
+        return $this->belongsToMany(Calendario::class);
+    }
+
+    //Puede pertenecer a multiples departamentos
+    public function departamentos()
+    {
+        return $this->belongsToMany(Departamento::class);
+    }
+
+    //Puede tener multiples vacaciones
+    public function vacations()
+    {
+        return $this->hasMany(Vacation::class);
+    }
+
+    //Puede tener multiples horarios
+    public function horarios()
+    {
+        return $this->hasMany(Horario::class);
     }
 }
