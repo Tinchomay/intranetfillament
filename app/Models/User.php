@@ -55,6 +55,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Country::class);
     }
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 
     //El usuario va a tener multiples calendarios
     public function calendarios()

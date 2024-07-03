@@ -112,6 +112,10 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('state.name')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->label('Estado'),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
