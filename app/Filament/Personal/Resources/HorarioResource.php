@@ -25,7 +25,8 @@ class HorarioResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', Auth::user()->id);
+        //Retornamos descendentemente los resultados para mostrar los ultimos
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->orderBy('id', 'DESC');
     }
 
     public static function form(Form $form): Form
@@ -52,7 +53,6 @@ class HorarioResource extends Resource
             Forms\Components\DateTimePicker::make('dia_salida'),
         ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table

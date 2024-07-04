@@ -2,13 +2,14 @@
 
 namespace App\Filament\Personal\Resources\HorarioResource\Pages;
 
-use App\Filament\Personal\Resources\HorarioResource;
-use App\Models\Horario;
 use Carbon\Carbon;
 use Filament\Actions;
+use App\Models\Horario;
 use Filament\Actions\Action;
-use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\Auth;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ListRecords;
+use App\Filament\Personal\Resources\HorarioResource;
 
 class ListHorarios extends ListRecords
 {
@@ -24,7 +25,6 @@ class ListHorarios extends ListRecords
 
         $ultimaAccion = $acciones->first();
         $penultimaAccion = $acciones->skip(1)->first();
-
         if ($ultimaAccion && (($ultimaAccion->type ?? null) == 'trabajo') && ($ultimaAccion->dia_entrada ?? null)
         && ((($penultimaAccion->type ?? null) == 'pausa') && !$ultimaAccion->dia_salida)) {
 
@@ -37,6 +37,10 @@ class ListHorarios extends ListRecords
                     $accion = Horario::where('user_id', $userId)->orderBy('created_at', 'DESC')->first();
                     $accion->dia_salida = Carbon::now();
                     $accion->save();
+                    Notification::make()
+                        ->title('Has terminado de trabajar')
+                        ->success()
+                        ->send();
                 })
         ];
         } else if ($ultimaAccion && ($ultimaAccion->type ?? null) == 'pausa' && $ultimaAccion->dia_entrada ?? null) {
@@ -56,6 +60,10 @@ class ListHorarios extends ListRecords
                             'type' => 'trabajo',
                             'dia_entrada' => Carbon::now()
                         ]);
+                        Notification::make()
+                            ->title('Ha terminado tu pausa')
+                            ->success()
+                            ->send();
                     }),
             ];
         } else if ($ultimaAccion && (($ultimaAccion->type ?? null) == 'trabajo') && ($ultimaAccion->dia_entrada ?? null) && (!$ultimaAccion->dia_salida ?? null)) {
@@ -74,6 +82,10 @@ class ListHorarios extends ListRecords
                             'type' => 'pausa',
                             'dia_entrada' => Carbon::now()
                         ]);
+                        Notification::make()
+                            ->title('Ha comenzado tu pausa')
+                            ->success()
+                            ->send();
                     }),
             ];
         } else if ((!$ultimaAccion) || ($ultimaAccion && ($ultimaAccion->type ?? null) == 'trabajo' && $ultimaAccion->dia_salida ?? null)) {
@@ -89,6 +101,10 @@ class ListHorarios extends ListRecords
                             'type' => 'trabajo',
                             'dia_entrada' => Carbon::now()
                         ]);
+                        Notification::make()
+                            ->title('Has comenzado a trabajar')
+                            ->success()
+                            ->send();
                     })
             ];
         }
