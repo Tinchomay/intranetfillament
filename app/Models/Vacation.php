@@ -27,4 +27,8 @@ class Vacation extends Model
     {
         return $this->belongsTo(Calendario::class);
     }
+
+    protected $casts = [
+      'dia' => 'date'
+    ];
 }

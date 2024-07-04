@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateHorario extends CreateRecord
 {
     protected static string $resource = HorarioResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

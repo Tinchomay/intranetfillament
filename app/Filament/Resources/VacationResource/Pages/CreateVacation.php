@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateVacation extends CreateRecord
 {
     protected static string $resource = VacationResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Personal\Resources\HorarioResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Personal\Resources\HorarioResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditUser extends EditRecord
+class EditHorario extends EditRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = HorarioResource::class;
 
     protected function getHeaderActions(): array
     {
