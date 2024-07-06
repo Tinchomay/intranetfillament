@@ -42,7 +42,7 @@ class User extends ChartWidget
         $meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
         $arregloConNombresDeMeses = [];
         foreach ($arregloConIndices as $indice => $valor) {
-            $nombreMes = $meses[$indice];
+            $nombreMes = $meses[$indice - 1];
             $arregloConNombresDeMeses[$nombreMes] = $valor;
         }
         return $arregloConNombresDeMeses ;

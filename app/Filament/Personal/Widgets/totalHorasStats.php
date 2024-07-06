@@ -22,7 +22,7 @@ class totalHorasStats extends BaseWidget
     {
         $horarios = Horario::where('user_id', Auth::user()->id)
                     ->where('type', 'trabajo')
-                    ->whereDate('created_at', '=', Carbon::today()->toDateString())
+                    ->whereDate('created_at', Carbon::today()->toDateString())
                     ->get();
         $totalSegundos = 0;
         foreach($horarios as $horario){
@@ -40,7 +40,7 @@ class totalHorasStats extends BaseWidget
     {
         $horarios = Horario::where('user_id', Auth::user()->id)
                     ->where('type', 'pausa')
-                    ->whereDate('created_at', '=', Carbon::today()->toDateString())
+                    ->whereDate('created_at', Carbon::today()->toDateString())
                     ->get();
         $totalSegundos = 0;
         foreach($horarios as $horario){

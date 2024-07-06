@@ -3,8 +3,11 @@
 namespace App\Filament\Personal\Resources\VacationResource\Pages;
 
 use App\Filament\Personal\Resources\VacationResource;
+use App\Mail\VacacionAprobada;
+use App\Models\User;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Mail;
 
 class EditVacation extends EditRecord
 {

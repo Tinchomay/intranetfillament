@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\HorarioResource\Pages;
 
-use App\Filament\Resources\HorarioResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\HorarioResource;
+use App\Imports\HorariosImport;
+use EightyNine\ExcelImport\ExcelImportAction;
 
 class ListHorarios extends ListRecords
 {
@@ -14,6 +16,9 @@ class ListHorarios extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            ExcelImportAction::make()
+                ->color("primary")
+                ->use(HorariosImport::class),
         ];
     }
 }

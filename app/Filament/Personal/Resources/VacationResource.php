@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
+use Filament\Notifications\Notification;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -26,6 +27,20 @@ class VacationResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-sun';
 
     protected static ?string $navigationLabel = 'Vacaciones';
+
+    //Agregando los numeros
+    public static function getNavigationBadge(): ?string
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->where('type', 'pendiente')->where('dia', '>', now()->format('Y-m-d'))->count();
+    }
+
+    //Cambiando el color segun el numero
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return parent::getEloquentQuery()->where('user_id', Auth::user()->id)->where('type', 'pendiente')->where('dia', '>', now()->format('Y-m-d'))->count() > 0 ? 'danger' : 'primary';
+    }
+    //Agregando una leyenda si ponen el mouse arriba
+    protected static ?string $navigationBadgeTooltip = 'Vacaciones pendientes de autorización';
 
     public static function getEloquentQuery(): Builder
     {

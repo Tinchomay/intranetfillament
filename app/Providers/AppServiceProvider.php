@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use BezhanSalleh\PanelSwitch\PanelSwitch;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +12,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
+            $panelSwitch
+            //Tipo de modal
+                ->modalWidth('sm')
+                ->visible(fn (): bool => auth()->user()?->hasAnyRole([
+                    'super_admin',
+                ]));
+
+        });
     }
 
     /**

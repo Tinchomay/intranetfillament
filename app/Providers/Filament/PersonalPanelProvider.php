@@ -2,21 +2,24 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
-use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Widgets;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\PanelProvider;
+use Filament\Pages\Dashboard;
+use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
+use Filament\Http\Middleware\Authenticate;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\Navigation\MenuItem;
 
 class PersonalPanelProvider extends PanelProvider
 {
@@ -37,6 +40,9 @@ class PersonalPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->databaseNotifications()
+            //Agregar que puedan editar su perfil
+            // ->profile()
             ->discoverWidgets(in: app_path('Filament/Personal/Widgets'), for: 'App\\Filament\\Personal\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,
@@ -55,6 +61,26 @@ class PersonalPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Admin')
+                    ->url('/dashboard')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    //Podemos hacerlo visible solo si esl usuario tiene un rol de super_admin
+                    ->visible(fn (): bool => auth()->user()?->hasAnyRole([
+                        'super_admin',
+                    ])),
+            ])
+            ->navigationItems([
+                NavigationItem::make('AgustinSM')
+                ->url('https://filament.pirsch.io', shouldOpenInNewTab: true)
+                ->icon('heroicon-o-presentation-chart-line')
+                ->group('Reports')
+                ->sort(3),
             ]);
     }
 }

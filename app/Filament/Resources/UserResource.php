@@ -100,6 +100,16 @@ class UserResource extends Resource
                     Forms\Components\TextInput::make('postal_code')
                     ->required()
                     ->label('Codigo Postal'),
+                    // Using Select Component
+                    Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
+                    // Using CheckboxList Component
+                    // Forms\Components\CheckboxList::make('roles')
+                    // ->relationship('roles', 'name')
+                    // ->searchable()
                 ])
             ]);
     }

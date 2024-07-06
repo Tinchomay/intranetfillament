@@ -8,10 +8,14 @@ use App\Models\Horario;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use pxlrbt\FilamentExcel\Columns\Column;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 use App\Filament\Resources\HorarioResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use App\Filament\Resources\HorarioResource\RelationManagers;
 
 class HorarioResource extends Resource
@@ -97,7 +101,24 @@ class HorarioResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    // ExportBulkAction::make()->exports([
+                    //     ExcelExport::make('table')->fromTable()
+                    //     ->withFilename('Horarios ' . date('Y-m-d') . ' - export')
+                    //     ->withColumns([
+                    //     //Tambien podemos añadir columnas
+                    //         //Aqui en este caso nos añade todos los datos del usuario
+                    //         Column::make('User'),
+                    //         Column::make('created_at'),
+                    //         Column::make('deleted_at'),
+                    //     ])
+                    // ]),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make('table')->fromTable()
+                            ->askForFilename()
+                            ->askForWriterType()
+                    ])
                 ]),
+
             ]);
     }
 
