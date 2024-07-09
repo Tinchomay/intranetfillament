@@ -12,6 +12,15 @@ class User extends ChartWidget
 {
     protected static ?string $heading = 'Vacaciones';
 
+    //Podemos añadir descripciones
+    public function getDescription(): ?string
+    {
+        return 'Resumen de vacaciones autorizadas del año';
+    }
+
+    protected int | string | array $columnSpan = 'full';
+
+    protected static ?string $maxHeight = '170px';
 
     protected function getData(): array
     {
@@ -32,6 +41,8 @@ class User extends ChartWidget
                 [
                     'label' => 'Vacaciones Pedidas',
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'backgroundColor' => '#36A2EB',
+                    'borderColor' => '#9BD0F5',
                 ],
             ],
             'labels' => $data->map(fn (TrendValue $value) => $value->date),
@@ -39,6 +50,6 @@ class User extends ChartWidget
     }
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
 }
