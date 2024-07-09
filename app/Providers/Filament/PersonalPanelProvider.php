@@ -71,9 +71,20 @@ class PersonalPanelProvider extends PanelProvider
                     ->url('/dashboard')
                     ->icon('heroicon-o-cog-6-tooth')
                     //Podemos hacerlo visible solo si esl usuario tiene un rol de super_admin
-                    ->visible(fn (): bool => auth()->user()?->hasAnyRole([
-                        'super_admin',
-                    ])),
+                    ->visible(function() {
+                        //Con esto de aqui comprobamos que un usuario este logueado primero
+                        if(auth()->user()){
+                            //Aqui comprobamos si tiene un rol
+                            if(auth()->user()?->hasAnyRole(['super_admin'])){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+                ),
             ])
             ->navigationItems([
                 NavigationItem::make('AgustinSM')

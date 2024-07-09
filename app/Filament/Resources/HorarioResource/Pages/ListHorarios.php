@@ -7,6 +7,9 @@ use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\HorarioResource;
 use App\Imports\HorariosImport;
 use EightyNine\ExcelImport\ExcelImportAction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Actions\Action;
+use Illuminate\Support\Facades\Auth;
 
 class ListHorarios extends ListRecords
 {
@@ -19,6 +22,14 @@ class ListHorarios extends ListRecords
             ExcelImportAction::make()
                 ->color("primary")
                 ->use(HorariosImport::class),
+            Action::make('crearPDF')
+                ->label('Crear PDF')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->url( fn() =>
+                    route('pdf.example', ['user' => 3]),
+                    shouldOpenInNewTab: false
+                ),
         ];
     }
 }
